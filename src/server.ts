@@ -1,7 +1,8 @@
 import express from 'express';
+import { hash } from 'bcrypt';
 import { Router, Request, Response, NextFunction } from 'express';
 import { pool } from './database/connection';
-import { hash } from 'bcrypt';
+import { checkEmailExists } from './middlewares/users';
 
 const cors = require('cors');
 
@@ -26,27 +27,6 @@ interface createUser {
   dateBirth: string,
   gender: string,
   phoneNumber: string,
-}
-
-async function verifyEmailMiddleware(req: Request, res: Response, next: NextFunction) {
-  const { email } = req.body;
-
-  const conn = await pool.getConnection();
-
-  try {
-    const [rows] = await conn.execute(
-      'SELECT COUNT(email) as COUNT FROM customers WHERE email = ?', [email]
-    );
-
-    if (rows[0].COUNT > 0) {
-      return res.status(409).send({ message: 'Esse e-mail já está registrado no sistema!', error: true });
-    }
-
-    next();
-  } finally {
-    // release the connection
-    conn.release();
-  }
 }
 
 async function verifyCPFMiddleware(req: Request, res: Response, next: NextFunction) {
@@ -92,7 +72,7 @@ async function insertUser({email, cpf, password, name, dateBirth, gender, phoneN
   }
 }
 
-route.post('/users', verifyEmailMiddleware, verifyCPFMiddleware, async (req: Request, res: Response) => {
+route.post('/users', checkEmailExists, verifyCPFMiddleware, async (req: Request, res: Response) => {
   await insertUser(req.body);
 
   return res.status(201).send({ message: 'Usuário cadastrado com sucesso!' });
