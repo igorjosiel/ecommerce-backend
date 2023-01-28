@@ -2,7 +2,7 @@ import express from 'express';
 import { hash } from 'bcrypt';
 import { Router, Request, Response, NextFunction } from 'express';
 import { pool } from './database/connection';
-import { checkEmailExists } from './middlewares/users';
+import { checkEmailExists, checkCpfExists } from './middlewares/users';
 
 const cors = require('cors');
 
@@ -29,27 +29,6 @@ interface createUser {
   phoneNumber: string,
 }
 
-async function verifyCPFMiddleware(req: Request, res: Response, next: NextFunction) {
-  const { cpf } = req.body;
-
-  const conn = await pool.getConnection();
-
-  try {
-    const [rows] = await conn.execute(
-      'SELECT COUNT(cpf) as COUNT FROM customers WHERE cpf = ?', [cpf]
-    );
-
-    if (rows[0].COUNT > 0) {
-      return res.status(409).send({ message: 'Esse CPF já está registrado no sistema!', error: true });
-    }
-
-    next();
-  } finally {
-    // release the connection
-    conn.release();
-  }
-}
-
 async function insertUser({email, cpf, password, name, dateBirth, gender, phoneNumber}: createUser) {
     // acquire connection from pool
   const conn = await pool.getConnection();
@@ -72,7 +51,7 @@ async function insertUser({email, cpf, password, name, dateBirth, gender, phoneN
   }
 }
 
-route.post('/users', checkEmailExists, verifyCPFMiddleware, async (req: Request, res: Response) => {
+route.post('/users', checkEmailExists, checkCpfExists, async (req: Request, res: Response) => {
   await insertUser(req.body);
 
   return res.status(201).send({ message: 'Usuário cadastrado com sucesso!' });
