@@ -8,7 +8,7 @@ async function checkEmailExists(req: Request, res: Response, next: NextFunction)
         const result = await pool.query('SELECT * FROM customers WHERE email = ?', [email]);
         
         if(result[0].length > 0){
-            return res.status(409).json({ message: "Esse e-mail já está registrado no sistema!" });
+            return res.status(409).json({ message: "Esse e-mail já está registrado no sistema!", error: true });
         }
 
         next();
