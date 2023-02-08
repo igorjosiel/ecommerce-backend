@@ -3,9 +3,9 @@ import express from 'express';
 const router = express.Router();
 
 import CustomerController from './controllers/CustomerController';
-import EmailIsValidMiddleware from './middlewares/EmailIsValidMiddleware';
+import { EmailIsValidMiddleware, CPFisValidMiddleware } from './middlewares';
 
 router.get('/customers', CustomerController.get);
-router.post('/customers', EmailIsValidMiddleware, CustomerController.create);
+router.post('/customers', EmailIsValidMiddleware, CPFisValidMiddleware, CustomerController.create);
 
 export default router;

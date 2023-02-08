@@ -16,7 +16,7 @@ interface CustomersInterface {
 async function get(req: Request, res: Response) {
     const customers: CustomersInterface[] = await knex('customers');
 
-    return res.json(customers);
+    return res.json({ customers, message: 'Usuários listados com sucesso!', error: false });
 }
 
 async function create(req: Request, res: Response, next: NextFunction) {
@@ -33,7 +33,7 @@ async function create(req: Request, res: Response, next: NextFunction) {
             phonenumber,
         });
 
-        return res.status(201).send({ message: 'Usuário cadastrado com sucesso!' });
+        return res.status(201).send({ message: 'Usuário cadastrado com sucesso!', error: false });
     } catch (error) {
         next(error);
     }
