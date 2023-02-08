@@ -1,5 +1,5 @@
 import knex from '../database';
-import { Request, Response } from 'express';
+import { Request, Response, NextFunction } from 'express';
 
 interface CustomersInterface {
     id: number,
@@ -14,11 +14,32 @@ interface CustomersInterface {
 }
 
 async function read(req: Request, res: Response) {
-    knex('customers').then((results: CustomersInterface[]) => {
-        return res.json(results);
-    });
+    const customers: CustomersInterface[] = await knex('customers');
+
+    return res.json(customers);
+}
+
+async function create(req: Request, res: Response, next: NextFunction) {
+    try {
+        const { email, password, name, datebirth, gender, country, phonenumber } = req.body;
+
+        await knex('customers').insert({
+            email,
+            password,
+            name,
+            datebirth,
+            gender,
+            country,
+            phonenumber,
+        });
+
+        return res.status(201).send({ message: 'Usuário cadastrado com sucesso!' });
+    } catch (error) {
+        next(error);
+    }
 }
 
 export default {
     read,
+    create,
 }

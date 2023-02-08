@@ -1,9 +1,11 @@
 import express from 'express';
 
-const routes = express.Router();
+const router = express.Router();
 
 import CustomerController from './controllers/CustomerController';
+import EmailIsValidMiddleware from './middlewares/EmailIsValidMiddleware';
 
-routes.get('/customers', CustomerController.read);
+router.get('/customers', CustomerController.read);
+router.post('/customers', EmailIsValidMiddleware, CustomerController.create);
 
-export default routes;
+export default router;
