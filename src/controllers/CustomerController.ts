@@ -13,7 +13,7 @@ interface CustomersInterface {
     updated_at: string,
 }
 
-async function read(req: Request, res: Response) {
+async function get(req: Request, res: Response) {
     const customers: CustomersInterface[] = await knex('customers');
 
     return res.json(customers);
@@ -40,6 +40,6 @@ async function create(req: Request, res: Response, next: NextFunction) {
 }
 
 export default {
-    read,
+    get,
     create,
 }
