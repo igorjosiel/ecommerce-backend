@@ -1,7 +1,6 @@
-import knex from '../database';
 import { Request, Response, NextFunction } from 'express';
-
-interface CustomersInterface {
+import knex from '../database';
+export interface CustomersInterface {
     id: number,
     password: string,
     name: string,
@@ -21,12 +20,13 @@ async function get(req: Request, res: Response) {
 
 async function create(req: Request, res: Response, next: NextFunction) {
     try {
-        const { email, password, name, datebirth, gender, country, phonenumber } = req.body;
+        const { email, password, name, cpf, datebirth, gender, country, phonenumber } = req.body;
 
         await knex('customers').insert({
             email,
             password,
             name,
+            cpf,
             datebirth,
             gender,
             country,
@@ -39,7 +39,29 @@ async function create(req: Request, res: Response, next: NextFunction) {
     }
 }
 
+async function update(req: Request, res: Response, next: NextFunction) {
+    try {
+        const { id } = req.params;
+        const { email, password, name, datebirth, gender, country, phonenumber } = req.body;
+
+        await knex('customers').update({
+            email,
+            password,
+            name,
+            datebirth,
+            gender,
+            country,
+            phonenumber,
+        }).where({ id });
+
+        return res.status(200).send({ message: 'Usuário atualizado com sucesso!', error: false });
+    } catch (error) {
+        next(error);
+    }
+}
+
 export default {
     get,
     create,
+    update,
 }
