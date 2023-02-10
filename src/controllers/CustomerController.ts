@@ -60,8 +60,21 @@ async function update(req: Request, res: Response, next: NextFunction) {
     }
 }
 
+async function deleteC(req: Request, res: Response, next: NextFunction) {
+    try {
+        const { id } = req.params;
+
+        await knex('customers').where({ id }).del();
+
+        return res.status(200).send({ message: 'Usuário deletado com sucesso!', error: false });
+    } catch (error) {
+        next(error);
+    }
+}
+
 export default {
     get,
     create,
     update,
+    deleteC,
 }

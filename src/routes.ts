@@ -26,5 +26,6 @@ router.put('/customers/:id',
     RequiredDataMiddleware,
     CustomerController.update
 );
+router.delete('/customers/:id', CustomerController.deleteC);
 
 export default router;
