@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import knex from '../database/index';
-import { CustomersInterface } from '../controllers/CustomerController';
+import { CustomersInterface } from '../interfaces/CustomersInterface';
 
 const CPFisAvailableMiddleware = async (req: Request, res: Response, next: NextFunction) => {
     const { cpf } = req.body;

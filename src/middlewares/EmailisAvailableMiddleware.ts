@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import knex from '../database/index';
-import { CustomersInterface } from '../controllers/CustomerController';
+import { CustomersInterface } from '../interfaces/CustomersInterface';
 
 const EmailisAvailableMiddleware = async (req: Request, res: Response, next: NextFunction) => {
     const { email } = req.body;

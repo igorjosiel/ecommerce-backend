@@ -1,16 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import knex from '../database';
-export interface CustomersInterface {
-    id: number,
-    password: string,
-    name: string,
-    datebirth: Date,
-    gender: string,
-    country: string,
-    phonenumber: string,
-    created_at: string,
-    updated_at: string,
-}
+import { CustomersInterface } from '../interfaces/CustomersInterface';
 
 async function get(req: Request, res: Response) {
     const customers: CustomersInterface[] = await knex('customers');
