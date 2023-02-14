@@ -18,7 +18,7 @@ const RequiredDataMiddleware = (requiredData: any) => {
             if (!data[key]) return requiredDataWithError();
         }
 
-        next();
+        return next();
     };
 }
 

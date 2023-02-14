@@ -9,7 +9,7 @@ const CPFisAvailableMiddleware = async (req: Request, res: Response, next: NextF
 
     if (customer.length > 0) return res.status(409).json({ message: 'Esse CPF já está cadastrado no sistema!', error: true });
 
-    next();
+    return next();
 };
 
 export default CPFisAvailableMiddleware;

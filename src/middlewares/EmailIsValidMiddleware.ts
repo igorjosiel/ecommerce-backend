@@ -6,7 +6,7 @@ const EmailIsValidMiddleware = (req: Request, res: Response, next: NextFunction)
 
   if (!validator.isEmail(email)) return res.status(400).json({ message: 'E-mail inválido!', error: true });
 
-  next();
+  return next();
 };
 
 export default EmailIsValidMiddleware;

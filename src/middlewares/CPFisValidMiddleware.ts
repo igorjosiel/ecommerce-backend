@@ -29,7 +29,7 @@ const CPFisValidMiddleware = (req: Request, res: Response, next: NextFunction) =
     if ((rest == 10) || (rest == 11)) rest = 0;
     if (rest != parseInt(formattedCPF.substring(10, 11))) return CPFisInvalid();
 
-    next();
+    return next();
 }
 
 export default CPFisValidMiddleware;

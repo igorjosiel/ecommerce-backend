@@ -16,7 +16,7 @@ const EmailisAvailableMiddleware = async (req: Request, res: Response, next: Nex
         return res.status(409).json({ message: 'Esse e-mail já está cadastrado no sistema!', error: true });
     }
 
-    next();
+    return next();
 };
 
 export default EmailisAvailableMiddleware;
