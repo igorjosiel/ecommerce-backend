@@ -3,6 +3,7 @@ import EmailIsValidMiddleware from "./EmailIsValidMiddleware";
 import CPFisAvailableMiddleware from "./CPFisAvailableMiddleware";
 import EmailisAvailableMiddleware from "./EmailisAvailableMiddleware";
 import RequiredDataMiddleware from "./RequiredDataMiddleware";
+import ValidateJWTMiddleware from "./ValidateJWTMiddleware";
 
 export {
     CPFisValidMiddleware,
@@ -10,4 +11,5 @@ export {
     CPFisAvailableMiddleware,
     EmailisAvailableMiddleware,
     RequiredDataMiddleware,
+    ValidateJWTMiddleware,
 }

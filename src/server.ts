@@ -1,6 +1,7 @@
 import express, { NextFunction, Request, Response } from 'express';
 import router from './routes';
 import CustomError from './classes/CustomerError';
+require('dotenv').config();
 
 const app = express();
 
@@ -21,6 +22,6 @@ app.use((error: any, req: Request, res: Response, next: NextFunction) => {
     res.json({ error: error.message });
 });
 
-app.listen(3333, () => console.log('Server is running!'));
+app.listen(process.env.PORT, () => console.log('Server is running!'));
 
 export default app;
