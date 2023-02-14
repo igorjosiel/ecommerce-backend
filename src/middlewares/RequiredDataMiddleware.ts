@@ -1,13 +1,25 @@
 import { Request, Response, NextFunction } from 'express';
 
-const RequiredDataMiddleware = (req: Request, res: Response, next: NextFunction) => {
-    const data = req.body;
+const RequiredDataMiddleware = (requiredData: any) => {
+    return function (req: Request, res: Response, next: NextFunction) {
+        const data = req.body;
 
-    for (let key in data) {
-        if (!data[key]) return res.status(400).json({ message: 'Dados obrigatórios estão faltando!', error: true });
-    }
+        const requiredDataWithError = () => res.status(400).json({ message: 'Dados obrigatórios estão faltando!', error: true });
 
-    next();
-};
+        // Treatment to validate if all the required data are coming in the request object
+        requiredData.forEach((required: string) => {
+            const requiredDataSuccessful = Object.keys(req.body).some(data => data === required);
+
+            if (!requiredDataSuccessful) return requiredDataWithError();
+        });
+
+        // Treatment to validate if all the required data are coming in the request object with some value
+        for (let key in data) {
+            if (!data[key]) return requiredDataWithError();
+        }
+
+        next();
+    };
+}
 
 export default RequiredDataMiddleware;
