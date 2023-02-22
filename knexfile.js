@@ -6,11 +6,11 @@
 module.exports = {
 
   development: {
-    client: 'pg',
+    client: process.env.CLIENT,
     connection: {
-      database: "myecommerce",
-      user: "postgres",
-      password: "myPostgres",
+      database: process.env.DATABASE,
+      user: process.env.USER,
+      password: process.env.PASSWORD,
     },
     migrations: {
       directory: `${__dirname}/src/database/migrations`
